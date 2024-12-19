@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .character-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 400px;
+      background: #f0f9ff;
+    }
+
+    @keyframes blink {
+      0%, 95%, 100% { transform: scaleY(1); }
+      97% { transform: scaleY(0.1); }
+    }
+
+    @keyframes wave {
+      0% { transform: rotate(0deg); }
+      25% { transform: rotate(-75deg); }
+      50% { transform: rotate(-80deg); }
+      75% { transform: rotate(-75deg); }
+      100% { transform: rotate(0deg); }
+    }
+
+    .eye {
+      animation: blink 3s infinite;
+      transform-origin: center;
+    }
+
+    .right-arm {
+      animation: wave 1.5s ease-in-out infinite;
+      transform-origin: 135px 165px;
+    }
+  </style>
+</head>
+<body>
+  <div class="character-container">
+    <svg width="200" height="300" viewBox="0 0 200 300">
+      <!-- Character -->
+      <!-- Head -->
+      <circle cx="100" cy="100" r="50" fill="#FFB6C1"/>
+      
+      <!-- Eyes -->
+      <circle class="eye" cx="80" cy="90" r="8" fill="#333"/>
+      <circle class="eye" cx="120" cy="90" r="8" fill="#333"/>
+      
+      <!-- Smile -->
+      <path d="M80,110 Q100,130 120,110" fill="none" stroke="#333" stroke-width="3"/>
+      
+      <!-- Body -->
+      <rect x="75" y="150" width="50" height="80" rx="20" fill="#FFB6C1"/>
+      
+      <!-- Arms -->
+      <rect class="right-arm" x="125" y="160" width="20" height="60" rx="10" fill="#FFB6C1"/>
+      <rect x="55" y="160" width="20" height="60" rx="10" fill="#FFB6C1"/>
+      
+      <!-- Legs -->
+      <rect x="85" y="230" width="15" height="40" rx="7" fill="#FFB6C1"/>
+      <rect x="100" y="230" width="15" height="40" rx="7" fill="#FFB6C1"/>
+    </svg>
+  </div>
+</body>
+</html>
