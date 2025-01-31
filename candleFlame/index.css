@@ -1,0 +1,53 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: black;
+}
+
+.candle {
+    position: relative;
+    width: 50px;
+    height: 150px;
+}
+
+.candle-body {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    border-radius: 10px 10px 0 0;
+}
+
+.wick {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 20px;
+    background-color: brown;
+}
+
+.flame {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 40px;
+    background-color: orange;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    animation: flicker 0.1s infinite alternate;
+}
+
+@keyframes flicker {
+    0% {
+        transform: translateX(-50%) scale(1, 1);
+    }
+    100% {
+        transform: translateX(-50%) scale(1.1, 0.9);
+    }
+}
