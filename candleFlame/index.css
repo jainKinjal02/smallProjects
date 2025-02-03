@@ -1,53 +1,98 @@
 body {
-    margin: 0;
-    padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: black;
-}
-
-.candle {
+    background-color: #1a1a1a;
+    margin: 0;
+  }
+  
+  .candle {
     position: relative;
-    width: 50px;
-    height: 150px;
-}
-
-.candle-body {
+    width: 30px;
+    height: 100px;
+  }
+  
+  .candle-body {
     width: 100%;
     height: 100%;
-    background-color: white;
-    border-radius: 10px 10px 0 0;
-}
-
-.wick {
+    background: linear-gradient(to bottom, #ffffff, #f0f0f0);
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  }
+  
+  .wick {
     position: absolute;
     top: -10px;
     left: 50%;
     transform: translateX(-50%);
-    width: 4px;
-    height: 20px;
-    background-color: brown;
-}
-
-.flame {
+    width: 3px;
+    height: 15px;
+    background-color: #333;
+  }
+  
+  .flame {
     position: absolute;
     top: -40px;
     left: 50%;
     transform: translateX(-50%);
-    width: 20px;
+    width: 15px;
     height: 40px;
-    background-color: orange;
+    background: linear-gradient(to bottom, #ffcc00, #ff6600);
     border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-    animation: flicker 0.1s infinite alternate;
-}
-
-@keyframes flicker {
-    0% {
-        transform: translateX(-50%) scale(1, 1);
+    animation: flicker 2s infinite ease-in-out;
+  }
+  
+  @keyframes flicker {
+    0%, 100% {
+      transform: translateX(-50%) scale(1, 1);
     }
-    100% {
-        transform: translateX(-50%) scale(1.1, 0.9);
+    25% {
+      transform: translateX(-50%) scale(0.95, 1.05);
     }
-}
+    50% {
+      transform: translateX(-50%) scale(1.05, 0.95);
+    }
+    75% {
+      transform: translateX(-50%) scale(0.98, 1.02);
+    }
+  }
+  
+  .spark {
+    position: absolute;
+    background-color: #ffcc00;
+    width: 2px;
+    height: 5px;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: sparkle 2s infinite ease-in-out;
+  }
+  
+  .spark-1 {
+    top: -10px;
+    left: 5px;
+    animation-delay: 0.5s;
+  }
+  
+  .spark-2 {
+    top: -15px;
+    left: 10px;
+    animation-delay: 1s;
+  }
+  
+  .spark-3 {
+    top: -12px;
+    left: 2px;
+    animation-delay: 1.5s;
+  }
+  
+  @keyframes sparkle {
+    0%, 100% {
+      transform: translateY(0) scale(1);
+      opacity: 0.8;
+    }
+    50% {
+      transform: translateY(-10px) scale(0.8);
+      opacity: 0.4;
+    }
+  }
