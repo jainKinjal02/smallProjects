@@ -68,6 +68,31 @@
             letter-spacing: 20px;
             text-transform: uppercase;
         }
+        .btn{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+        .btn a{
+            display: inline-block;
+            border: 1px solid #fff;
+            padding: 25px 60px;
+            color: #fff;
+            text-transform: uppercase;
+            text-decoration: none;
+            opacity:0 ;
+            transition: all ease 0.5s;
+
+        }
+        .btn a:hover{
+            background-color: #fff;
+            color: #000;
+        }
+        .common:hover .btn a{
+            opacity: 1;
+        }
         header{
             background-color: #000;
             display: flex;
@@ -125,35 +150,27 @@
             <div class="men common">
                 <div class="img">
                     <img src="men.jpg" />
-                    <div class="img-overlay">
-                        
+                    <div class="img-overlay"></div>
+                    <div class="btn">
+                        <a href="#">Shop Now</a>
                     </div>
                 </div>
                 <div class="text">
                     <h1>Men</h1>
                     <h5>Fashion</h5>
                 </div>
-                <div class="btn">
-                    <a href="#">
-                        Shop Now
-                    </a>
-                </div>
             </div>
             <div class="women common">
                 <div class="img">
                     <img src="women.jpg" />
-                    <div class="img-overlay">
-                        
+                    <div class="img-overlay"></div>
+                    <div class="btn">
+                        <a href="#">Shop Now</a>
                     </div>
                 </div>
                 <div class="text">
                     <h1>Women</h1>
                     <h5>Fashion</h5>
-                </div>
-                <div class="btn">
-                    <a href="#">
-                        Shop Now
-                    </a>
                 </div>
             </div>
         </div>
