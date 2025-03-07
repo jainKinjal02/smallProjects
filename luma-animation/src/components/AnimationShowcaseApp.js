@@ -190,41 +190,78 @@ const WaveAnimation = ({ color, speed, complexity }) => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
       // Get color based on the prop
-      let waveColor;
+      let waveColor, waveGradient;
       if (color === 'red') {
         waveColor = '#ef4444';
+        waveGradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+        waveGradient.addColorStop(0, '#ef4444');
+        waveGradient.addColorStop(0.5, '#f87171');
+        waveGradient.addColorStop(1, '#ef4444');
       } else if (color === 'blue') {
         waveColor = '#3b82f6';
+        waveGradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+        waveGradient.addColorStop(0, '#3b82f6');
+        waveGradient.addColorStop(0.5, '#60a5fa');
+        waveGradient.addColorStop(1, '#3b82f6');
       } else if (color === 'green') {
         waveColor = '#10b981';
+        waveGradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+        waveGradient.addColorStop(0, '#10b981');
+        waveGradient.addColorStop(0.5, '#34d399');
+        waveGradient.addColorStop(1, '#10b981');
       } else if (color === 'purple') {
         waveColor = '#8b5cf6';
+        waveGradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+        waveGradient.addColorStop(0, '#8b5cf6');
+        waveGradient.addColorStop(0.5, '#a78bfa');
+        waveGradient.addColorStop(1, '#8b5cf6');
       } else {
-        waveColor = '#ffffff';
+        waveGradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+        waveGradient.addColorStop(0, '#ef4444');
+        waveGradient.addColorStop(0.25, '#3b82f6');
+        waveGradient.addColorStop(0.5, '#10b981');
+        waveGradient.addColorStop(0.75, '#8b5cf6');
+        waveGradient.addColorStop(1, '#ef4444');
       }
       
-      // Draw multiple waves
-      for (let j = 1; j <= complexity; j++) {
+      // Draw multiple layers of waves with fill
+      for (let j = complexity; j >= 1; j--) {
+        // First wave - create the path
         ctx.beginPath();
+        ctx.moveTo(0, canvas.height);  // Start at bottom left
         
-        const amplitude = 50 / j;
-        const frequency = 0.01 * j;
+        const amplitude = 80 / j;
+        const frequency = 0.005 * j;
+        const heightOffset = canvas.height / 2 + 50 + (j * 15);
         
-        for (let i = 0; i < canvas.width; i++) {
-          const y = Math.sin((i * frequency) + (phase * speed * j)) * amplitude + canvas.height / 2;
-          if (i === 0) {
-            ctx.moveTo(i, y);
-          } else {
-            ctx.lineTo(i, y);
-          }
+        // Draw the wave from left to right
+        for (let i = 0; i <= canvas.width; i += 5) {
+          const y = Math.sin((i * frequency) + (phase * speed * j)) * amplitude + heightOffset;
+          ctx.lineTo(i, y);
         }
         
-        ctx.strokeStyle = `${waveColor}${(80 - j*20).toString(16)}`;
-        ctx.lineWidth = 3 - j * 0.5;
-        ctx.stroke();
+        // Complete the path back to the bottom right and then to bottom left
+        ctx.lineTo(canvas.width, canvas.height);
+        ctx.lineTo(0, canvas.height);
+        ctx.closePath();
+        
+        // Fill with gradient and transparency
+        if (color === 'rainbow') {
+          ctx.fillStyle = waveGradient;
+        } else {
+          ctx.fillStyle = `${waveColor}${Math.floor(20 + (j * 15)).toString(16)}`;
+        }
+        ctx.fill();
+        
+        // Add a subtle stroke
+        if (j === 1) {
+          ctx.strokeStyle = waveColor;
+          ctx.lineWidth = 2;
+          ctx.stroke();
+        }
       }
       
-      phase += 0.05;
+      phase += 0.02;
       animationFrameId = requestAnimationFrame(animate);
     };
     
@@ -349,6 +386,23 @@ const AnimationShowcaseApp = () => {
     density: 1
   });
   
+  // Add Poppins font
+  useEffect(() => {
+    // Create a link element for the Google Font
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap';
+    document.head.appendChild(link);
+    
+    // Apply the font to the body
+    document.body.style.fontFamily = "'Poppins', sans-serif";
+    
+    // Clean up
+    return () => {
+      document.head.removeChild(link);
+    };
+  }, []);
+  
   const renderAnimation = () => {
     switch(activeAnimation) {
       case 'particles':
@@ -384,35 +438,112 @@ const AnimationShowcaseApp = () => {
   const handleSettingChange = (setting, value) => {
     setSettings({ ...settings, [setting]: value });
   };
+
+  // Styled dropdown component
+  const StyledDropdown = ({ label, value, options, onChange }) => (
+    <div className="dropdown-container">
+      <label className="text-white text-sm block mb-2">{label}</label>
+      <div className="relative">
+        <select 
+          value={value}
+          onChange={onChange}
+          className="w-full bg-white bg-opacity-10 text-white px-4 py-3 rounded-lg appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-white"
+          style={{ 
+            backdropFilter: 'blur(10px)',
+            background: 'rgba(255, 255, 255, 0.1)',
+            transition: 'all 0.3s ease',
+            fontFamily: "'Poppins', sans-serif",
+            fontWeight: 300
+          }}
+        >
+          {options.map(option => (
+            <option key={option.value} value={option.value}>{option.label}</option>
+          ))}
+        </select>
+        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-white">
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </div>
+      </div>
+    </div>
+  );
+  
+  // Styled slider component
+  const StyledSlider = ({ label, value, min, max, step, onChange }) => (
+    <div>
+      <label className="text-white text-sm block mb-2">
+        {label}: {typeof value === 'number' ? value.toFixed(1) : value}
+      </label>
+      <input 
+        type="range" 
+        min={min} 
+        max={max} 
+        step={step} 
+        value={value}
+        onChange={onChange}
+        className="w-full accent-white"
+        style={{
+          height: '6px',
+          borderRadius: '3px',
+          cursor: 'pointer',
+          WebkitAppearance: 'none',
+          background: 'linear-gradient(to right, rgba(255,255,255,0.8), rgba(255,255,255,0.2))'
+        }}
+      />
+    </div>
+  );
   
   return (
-    <div className="relative h-screen w-full overflow-hidden">
+    <div className="relative h-screen w-full overflow-hidden" style={{ fontFamily: "'Poppins', sans-serif" }}>
       {/* Render the active animation */}
       {renderAnimation()}
       
       {/* UI Overlay */}
       <div className="absolute top-0 left-0 w-full p-6 flex justify-between items-start z-10">
         <div>
-          <h1 className="text-4xl font-light text-white mb-2">Animation Playground</h1>
-          <p className="text-white opacity-70">Explore and customize beautiful web animations</p>
+          <h1 
+            className="text-4xl font-light text-white mb-2" 
+            style={{ fontWeight: 300, letterSpacing: '1px' }}
+          >
+            Animation Playground
+          </h1>
+          <p className="text-white opacity-70" style={{ fontWeight: 300 }}>
+            Explore and customise beautiful web animations
+          </p>
         </div>
         
         <div className="flex space-x-4">
           <button 
             onClick={() => setActiveAnimation('particles')}
             className={`px-4 py-2 rounded-full text-white ${activeAnimation === 'particles' ? 'bg-white bg-opacity-30' : 'bg-white bg-opacity-10 hover:bg-opacity-20'}`}
+            style={{ 
+              fontWeight: 300, 
+              transition: 'all 0.3s ease',
+              backdropFilter: 'blur(5px)'
+            }}
           >
             Particles
           </button>
           <button 
             onClick={() => setActiveAnimation('waves')}
             className={`px-4 py-2 rounded-full text-white ${activeAnimation === 'waves' ? 'bg-white bg-opacity-30' : 'bg-white bg-opacity-10 hover:bg-opacity-20'}`}
+            style={{ 
+              fontWeight: 300, 
+              transition: 'all 0.3s ease',
+              backdropFilter: 'blur(5px)'
+            }}
           >
             Waves
           </button>
           <button 
             onClick={() => setActiveAnimation('matrix')}
             className={`px-4 py-2 rounded-full text-white ${activeAnimation === 'matrix' ? 'bg-white bg-opacity-30' : 'bg-white bg-opacity-10 hover:bg-opacity-20'}`}
+            style={{ 
+              fontWeight: 300, 
+              transition: 'all 0.3s ease',
+              backdropFilter: 'blur(5px)'
+            }}
           >
             Matrix
           </button>
@@ -420,99 +551,90 @@ const AnimationShowcaseApp = () => {
       </div>
       
       {/* Controls Panel */}
-      <div className="absolute bottom-0 left-0 w-full p-6 bg-black bg-opacity-50 backdrop-blur-md z-10">
+      <div 
+        className="absolute bottom-0 left-0 w-full p-6 bg-black bg-opacity-50 z-10"
+        style={{ backdropFilter: 'blur(10px)' }}
+      >
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-white text-xl mb-4">Customize Animation</h2>
+          <h2 
+            className="text-white text-xl mb-4" 
+            style={{ fontWeight: 400, letterSpacing: '0.5px' }}
+          >
+            Customise Animation
+          </h2>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {/* Color Selection */}
-            <div>
-              <label className="text-white text-sm block mb-2">Color Theme</label>
-              <select 
-                value={settings.color}
-                onChange={(e) => handleSettingChange('color', e.target.value)}
-                className="w-full bg-white bg-opacity-10 text-white px-3 py-2 rounded"
-              >
-                <option value="red">Red</option>
-                <option value="blue">Blue</option>
-                <option value="green">Green</option>
-                <option value="purple">Purple</option>
-                <option value="rainbow">Rainbow</option>
-              </select>
-            </div>
+            <StyledDropdown 
+              label="Color Theme"
+              value={settings.color}
+              options={[
+                { value: 'red', label: 'Red' },
+                { value: 'blue', label: 'Blue' },
+                { value: 'green', label: 'Green' },
+                { value: 'purple', label: 'Purple' },
+                { value: 'rainbow', label: 'Rainbow' }
+              ]}
+              onChange={(e) => handleSettingChange('color', e.target.value)}
+            />
             
             {/* Speed Control */}
-            <div>
-              <label className="text-white text-sm block mb-2">Speed: {settings.speed.toFixed(1)}</label>
-              <input 
-                type="range" 
-                min="0.5" 
-                max="3" 
-                step="0.1" 
-                value={settings.speed}
-                onChange={(e) => handleSettingChange('speed', parseFloat(e.target.value))}
-                className="w-full"
-              />
-            </div>
+            <StyledSlider 
+              label="Speed"
+              value={settings.speed}
+              min={0.5}
+              max={3}
+              step={0.1}
+              onChange={(e) => handleSettingChange('speed', parseFloat(e.target.value))}
+            />
             
             {/* Animation-specific controls */}
             {activeAnimation === 'particles' && (
               <>
-                <div>
-                  <label className="text-white text-sm block mb-2">Particle Size: {settings.size}</label>
-                  <input 
-                    type="range" 
-                    min="1" 
-                    max="8" 
-                    step="1" 
-                    value={settings.size}
-                    onChange={(e) => handleSettingChange('size', parseInt(e.target.value))}
-                    className="w-full"
-                  />
-                </div>
+                <StyledSlider 
+                  label="Particle Size"
+                  value={settings.size}
+                  min={1}
+                  max={8}
+                  step={1}
+                  onChange={(e) => handleSettingChange('size', parseInt(e.target.value))}
+                />
                 <div>
                   <label className="text-white text-sm block mb-2">Connections</label>
-                  <div className="mt-2">
+                  <div className="mt-2 flex items-center">
                     <input 
                       type="checkbox" 
+                      id="connections"
                       checked={settings.connections}
                       onChange={(e) => handleSettingChange('connections', e.target.checked)}
-                      className="mr-2"
+                      className="mr-2 w-5 h-5 accent-white cursor-pointer"
                     />
-                    <span className="text-white">Show Lines</span>
+                    <label htmlFor="connections" className="text-white cursor-pointer">Show Lines</label>
                   </div>
                 </div>
               </>
             )}
             
             {activeAnimation === 'waves' && (
-              <div>
-                <label className="text-white text-sm block mb-2">Complexity: {settings.complexity}</label>
-                <input 
-                  type="range" 
-                  min="1" 
-                  max="5" 
-                  step="1" 
-                  value={settings.complexity}
-                  onChange={(e) => handleSettingChange('complexity', parseInt(e.target.value))}
-                  className="w-full"
-                />
-              </div>
+              <StyledSlider 
+                label="Complexity"
+                value={settings.complexity}
+                min={1}
+                max={5}
+                step={1}
+                onChange={(e) => handleSettingChange('complexity', parseInt(e.target.value))}
+              />
             )}
             
             {activeAnimation === 'matrix' && (
-              <div>
-                <label className="text-white text-sm block mb-2">Density: {settings.density.toFixed(1)}</label>
-                <input 
-                  type="range" 
-                  min="0.5" 
-                  max="2" 
-                  step="0.1" 
-                  value={settings.density}
-                  onChange={(e) => handleSettingChange('density', parseFloat(e.target.value))}
-                  className="w-full"
-                />
-              </div>
+              <StyledSlider 
+                label="Density"
+                value={settings.density}
+                min={0.5}
+                max={2}
+                step={0.1}
+                onChange={(e) => handleSettingChange('density', parseFloat(e.target.value))}
+              />
             )}
           </div>
         </div>
