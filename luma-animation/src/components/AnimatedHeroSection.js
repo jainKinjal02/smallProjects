@@ -27,7 +27,7 @@ const AnimatedHeroSection = () => {
     const ctx = canvas.getContext('2d');
     let animationFrameId;
     
-    // Set canvas dimensions
+    // setting canvas dimensions
     const handleResize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
@@ -36,11 +36,11 @@ const AnimatedHeroSection = () => {
     window.addEventListener('resize', handleResize);
     handleResize();
     
-    // Particles array
+
     const particlesArray = [];
     const numberOfParticles = 100;
     
-    // Create particle class
+ 
     class Particle {
       constructor() {
         this.x = Math.random() * canvas.width;
@@ -133,9 +133,9 @@ const AnimatedHeroSection = () => {
       <div className="absolute inset-0 flex flex-col">
         <div className="flex-1 flex p-12">
           {/* Left side text */}
-          <div className="flex flex-col justify-center text-white w-1/2 z-10">
+          {/* <div className="flex flex-col justify-center text-white w-1/2 z-10">
             <h1 className="text-8xl font-light">New</h1>
-            <p className="text-6xl font-light italic ml-10 -mt-4">freedoms</p>
+            <p className="text-6xl font-light italic ml-10 -mt-4">Dreams</p>
             <div className="mt-12 max-w-md">
               <p className="opacity-90 leading-relaxed">
                 Ideate, visualize, create interfaces, and share your
@@ -144,19 +144,23 @@ const AnimatedHeroSection = () => {
                 now for React and Vue.
               </p>
             </div>
-          </div>
+          </div> */}
           
           {/* Right side - silhouette image */}
           <div className="flex-1 flex items-center justify-center relative">
-            <div className="absolute right-0 bottom-1/4 text-white text-right">
+            {/* <div className="absolute right-0 bottom-1/4 text-white text-right">
               <span className="text-8xl opacity-90">of</span>
               <p className="text-6xl font-light italic">imagination</p>
-            </div>
+            </div> */}
             
             {/* Silhouette placeholder - in a real project you would use an actual silhouette image */}
-            <div className="absolute h-96 w-48 bg-black opacity-80 rounded-md transform translate-x-12">
-              {/* This is where you would place the silhouette image */}
-            </div>
+            {/* <div className="absolute h-96 w-48 bg-black opacity-80 rounded-md transform translate-x-12">
+            <img 
+                src="yousef-samuil-H6BAgXoRxao-unsplash.jpg" 
+                alt="Silhouette"
+                className="w-full h-full object-cover object-center filter brightness-0"
+              />
+            </div> */}
           </div>
         </div>
       </div>
