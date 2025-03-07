@@ -1,11 +1,11 @@
 import React from 'react';
-import AnimatedHeroSection from './components/AnimatedHeroSection';
+import AnimationShowcaseApp from './components/AnimationShowcaseApp';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <AnimatedHeroSection />
+      <AnimationShowcaseApp />
     </div>
   );
 }
