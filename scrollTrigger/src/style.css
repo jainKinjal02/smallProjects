@@ -60,3 +60,67 @@ section{
   text-align: center;
   line-height: 1.1;
 }
+
+.cards{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 25svh;
+}
+
+.card-marquee{
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  overflow: hidden;
+}
+
+.marquee{
+  display: flex;
+}
+
+.marquee h1 {
+  white-space: nowrap;
+  font-size: 10vw;
+  font-weight: 600;
+  margin-right: 30px;
+}
+
+.card{
+  position: relative;
+  width: 100vw;
+  height: 100svh;
+  padding: 1.5em;
+}
+
+.card-wrapper{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+}
+
+.card-img{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 150px;
+  overflow: hidden;
+}
+
+.card-img img {
+  transform: scale(2);
+}
+
+.card-content{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index : 1;
+
+}
