@@ -39,3 +39,24 @@ p{
   font-weight: 400;
   line-height: 1.25;
 }
+
+section{
+  position: relative;
+  width: 100vw;
+  background-color: black;
+  color: white;
+}
+
+.intro, .outro{
+  height: 100vh;
+  padding: 1.5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.intro h1 , .outro h1{
+  width: 60%;
+  text-align: center;
+  line-height: 1.1;
+}
