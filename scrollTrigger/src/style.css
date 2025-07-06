@@ -124,3 +124,37 @@ section{
   z-index : 1;
 
 }
+
+.card-content .card-title{
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.card-content .card-description{
+  text-align: center;
+  width: 40%;
+  margin-bottom : 3em;
+  position: relative;
+  transform: translateX(40px);
+  opacity: 0;
+}
+
+.card:nth-child(2) {
+  margin-top: 50vh;
+}
+
+.char{
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.char span {
+  transform: translateX(100%);
+  display: inline-block;
+  will-change: transform;
+}
