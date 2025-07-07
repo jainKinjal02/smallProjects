@@ -93,5 +93,17 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     },
   });
+
+  cards.forEach((card, index) => {
+    const isLastCard = index === cards.length - 1;
+    ScrollTrigger.create({
+      trigger: card,
+      start: "top top",
+      end: isLastCard ? "+=100vh" : "top top",
+      endTrigger: isLastCard ? null : cards[cards.length - 1],
+      pin: true,
+      pinSpacing: isLastCard,
+    });
+  });
   
 });
