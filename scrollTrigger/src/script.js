@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function animateContentOut(titleChars, description) {
-    gsap.to(titleChars, { x: "0%", duration: 0.5, ease: "power4.out" });
+    gsap.to(titleChars, { x: "100%", duration: 0.5, ease: "power4.out" });
     gsap.to(description, {
       x: "40px",
       opacity: 0,
@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const marquee = introCard.querySelector(".card-marquee .marquee");
-  const titleChars = introCard.querySelectorAll(".char span");
+  const titleChars = introCard.querySelector(".char span");
   const description = introCard.querySelector(".card-description");
 
   ScrollTrigger.create({
@@ -105,5 +105,37 @@ document.addEventListener("DOMContentLoaded", () => {
       pinSpacing: isLastCard,
     });
   });
+
+  cards.forEach((card, index) => {
+    if (index > 0) {
+      const cardImg = card.querySelector(".card-img img");
+      const imgContainer = card.querySelector(".card-img");
+      ScrollTrigger.create({
+        trigger: card,
+        start: "top bottom",
+        end: "top top",
+        onUpdate: (self) => {
+          const progress = self.progress;
+          gsap.set(cardImg,{scale : 2 - progress});
+          gsap.set(imgContainer,{borderRadius: 150 - progress * 125 + "px"});
+        },
+      });
+    }
+  });
+  cards.forEach((card, index) => {
+    if(index === 0) return;
+
+    const cardDescription = card.querySelector(".card-description");
+    const cardTitleChars = card.querySelectorAll(".char span");
+
+    ScrollTrigger.create({
+        trigger : card,
+        start: "top top",
+        onEnter: () => animateContentIn(cardTitleChars, cardDescription),
+        onLeaveBack: () => animateContentOut(cardTitleChars, cardDescription),
+    });
+  });
+
+  setupMarqueeAnimation();
   
 });
