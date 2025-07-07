@@ -53,5 +53,45 @@ document.addEventListener("DOMContentLoaded", () => {
       ease: "power4.out",
     });
   }
+
+  const marquee = introCard.querySelector(".card-marquee .marquee");
+  const titleChars = introCard.querySelectorAll(".char span");
+  const description = introCard.querySelector(".card-description");
+
+  ScrollTrigger.create({
+    trigger: introCard,
+    start: "top top",
+    end: "+=300vh",
+    onUpdate: (self) => {
+      const progress = self.progress;
+      const imgScale = 0.5 + progress * 0.5;
+      const borderRadius = 400 - progress * 375;
+      const innerImgScale = 1.5 - progress * 0.5;
+
+      gsap.set(cardImgWrapper, {
+        scale: imgScale,
+        borderRadius: borderRadius + "px",
+      });
+      gsap.set(cardImg, { scale: innerImgScale });
+
+      if (imgScale >= 0.5 && imgScale <= 0.75) {
+        const fadeProgress = (imgScale - 0.5) / (0.75 - 0.5);
+        gsap.set(marquee, { opacity: 1 - fadeProgress });
+      } else if (imgScale < 0.5) {
+        gsap.set(marquee, { opacity: 1 });
+      } else if (imgScale > 0.75) {
+        gsap.set(marquee, { opacity: 0 });
+      }
+
+      if (progress >= 1 && !introCard.contentRevealed) {
+        introCard.contentRevealed = true;
+        animateContentIn(titleChars, description);
+      }
+      if (progress < 1 && introCard.contentRevealed) {
+        introCard.contentRevealed = false;
+        animateContentOut(titleChars, description);
+      }
+    },
+  });
   
 });
