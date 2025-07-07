@@ -2,7 +2,7 @@ import { setupMarqueeAnimation } from "./marquee";
 
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { SplitText } from "gsap/SplitText";
+//import { SplitText } from "gsap/SplitText";
 import Lenis from "lenis";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const titles = gsap.utils.toArray(".card-title h1");
   titles.forEach((title) => {
-    const split = new SplitText(title, {
+    const split = new window.SplitText(title, {
       type: "char",
       charsClass: "char",
       tag: "div",
